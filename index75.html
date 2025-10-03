@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Attendance with Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f8ff; /* light blue page background */
+      margin: 20px;
+    }
+
+    #loginSection, #attendanceSection {
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    #loginSection {
+      background-color: #e6e6fa; /* light violet */
+    }
+
+    #attendanceSection {
+      background-color: #e6ffe6; /* light green */
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: center;
+      border: 1px solid #999;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    button {
+      padding: 5px 10px;
+      margin: 5px;
+      cursor: pointer;
+      border-radius: 5px;
+      border: none;
+      background-color: #4682b4;
+      color: white;
+    }
+
+    button:hover {
+      background-color: #5a9bd4;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Login Section -->
+<div id="loginSection">
+  <h2>Login</h2>
+  <input type="email" id="emailInput" placeholder="Enter email">
+  <button onclick="login()">Login</button>
+</div>
+
+<!-- Attendance Section -->
+<div id="attendanceSection" style="display:none;">
+  <h2>Attendance System</h2>
+  <p>Logged in as: <span id="userEmail"></span></p>
+  <p>Enter Date: <input type="date" id="attDate"></p>
+
+  <table>
+    <tr>
+      <th>Roll</th><th>Name</th><th>BEE</th><th>Mechanics</th><th>Maths</th><th>Foreign Languages</th>
+    </tr>
+    <tr>
+      <td>1</td><td>Ananya</td>
+      <td><select id="att1_1"><option value="P">P</option><option value="A">A</option></select></td>
+      <td><select id="att1_2"><option value="P">P</option><option value="A">A</option></select></td>
+      <td><select id="att1_3"><option value="P">P</option><option value="A">A</option></select></td>
+      <td><select id="att1_4"><option value="P">P</option><option value="A">A</option></select></td>
+    </tr>
+    <tr>
+      <td>2</td><td>Salim</td>
+      <td><select id="att2_1"><option value="P">P</option><option value="A">A</option></select></td>
+      <td><select id="att2_2"><option value="P">P</option><option value="A">A</option></select></td>
+      <td><select id="att2_3"><option value="P">P</option><option value="A">A</option></select></td>
+      <td><select id="att2_4"><option value="P">P</option><option value="A">A</option></select></td>
+    </tr>
+    <tr>
+      <td>3</td><td>Rajkumar</td>
+      <td><select id="att3_1"><option value="P">P</option><option value="A">A</option></select></td>
+      <td><select id="att3_2"><option value="P">P</option><option value="A">A</option></select></td>
+      <td><select id="att3_3"><option value="P">P</option><option value="A">A</option></select></td>
+      <td><select id="att3_4"><option value="P">P</option><option value="A">A</option></select></td>
+    </tr>
+    <tr>
+      <td>4</td><td>Rajeev</td>
+      <td><select id="att4_1"><option value="P">P</option><option value="A">A</option></select></td>
+      <td><select id="att4_2"><option value="P">P</option><option value="A">A</option></select></td>
+      <td><select id="att4_3"><option value="P">P</option><option value="A">A</option></select></td>
+      <td><select id="att4_4"><option value="P">P</option><option value="A">A</option></select></td>
+    </tr>
+    <tr>
+      <td>5</td><td>Raju</td>
+      <td><select id="att5_1"><option value="P">P</option><option value="A">A</option></select></td>
+      <td><select id="att5_2"><option value="P">P</option><option value="A">A</option></select></td>
+      <td><select id="att5_3"><option value="P">P</option><option value="A">A</option></select></td>
+      <td><select id="att5_4"><option value="P">P</option><option value="A">A</option></select></td>
+    </tr>
+    <tr>
+      <td>6</td><td>Indumati</td>
+      <td><select id="att6_1"><option value="P">P</option><option value="A">A</option></select></td>
+      <td><select id="att6_2"><option value="P">P</option><option value="A">A</option></select></td>
+      <td><select id="att6_3"><option value="P">P</option><option value="A">A</option></select></td>
+      <td><select id="att6_4"><option value="P">P</option><option value="A">A</option></select></td>
+    </tr>
+  </table>
+
+  <br>
+  <button onclick="generateReport()">Generate Report</button>
+  <button onclick="logout()">Logout</button>
+
+  <h3>Attendance Report</h3>
+  <p id="reportDate" style="font-weight:bold;"></p>
+  <table id="reportTable">
+    <tr>
+      <th>Roll</th><th>Name</th><th>BEE</th><th>Mechanics</th>
+      <th>Maths</th><th>Foreign Languages</th><th>Percentage</th><th>Defaulter</th>
+    </tr>
+  </table>
+</div>
+
+<script>
+function login() {
+  const email = document.getElementById("emailInput").value.trim();
+  if(!email) { alert("Enter email!"); return; }
+  document.getElementById("userEmail").innerText = email;
+  document.getElementById("loginSection").style.display = "none";
+  document.getElementById("attendanceSection").style.display = "block";
+}
+
+function logout() {
+  document.getElementById("loginSection").style.display = "block";
+  document.getElementById("attendanceSection").style.display = "none";
+  document.getElementById("reportTable").innerHTML = `
+    <tr>
+      <th>Roll</th><th>Name</th><th>BEE</th><th>Mechanics</th>
+      <th>Maths</th><th>Foreign Languages</th><th>Percentage</th><th>Defaulter</th>
+    </tr>`;
+}
+
+function generateReport() {
+  const date = document.getElementById("attDate").value;
+  document.getElementById("reportDate").innerText = "Date: " + date;
+
+  const students = [
+    {roll:1, name:"Ananya", att:[get("att1_1"),get("att1_2"),get("att1_3"),get("att1_4")]},
+    {roll:2, name:"Salim", att:[get("att2_1"),get("att2_2"),get("att2_3"),get("att2_4")]},
+    {roll:3, name:"Rajkumar", att:[get("att3_1"),get("att3_2"),get("att3_3"),get("att3_4")]},
+    {roll:4, name:"Rajeev", att:[get("att4_1"),get("att4_2"),get("att4_3"),get("att4_4")]},
+    {roll:5, name:"Raju", att:[get("att5_1"),get("att5_2"),get("att5_3"),get("att5_4")]},
+    {roll:6, name:"Indumati", att:[get("att6_1"),get("att6_2"),get("att6_3"),get("att6_4")]}
+  ];
+
+  const table = document.getElementById("reportTable");
+  table.innerHTML = `
+    <tr>
+      <th>Roll</th><th>Name</th><th>BEE</th><th>Mechanics</th>
+      <th>Maths</th><th>Foreign Languages</th><th>Percentage</th><th>Defaulter</th>
+    </tr>`;
+
+  students.forEach(s=>{
+    const total = s.att.length;
+    const present = s.att.filter(x=>x==="P").length;
+    const per = (present/total)*100;
+    const def = (per<75)?"YES":"NO";
+    const row = table.insertRow();
+    row.insertCell(0).innerText = s.roll;
+    row.insertCell(1).innerText = s.name;
+    row.insertCell(2).innerText = s.att[0];
+    row.insertCell(3).innerText = s.att[1];
+    row.insertCell(4).innerText = s.att[2];
+    row.insertCell(5).innerText = s.att[3];
+    row.insertCell(6).innerText = per.toFixed(2)+"%";
+    row.insertCell(7).innerText = def;
+  });
+}
+
+function get(id){ return document.getElementById(id).value; }
+</script>
+</body>
+</html>
